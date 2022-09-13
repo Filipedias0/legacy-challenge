@@ -19,21 +19,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainViewModel.getUsers()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
         recyclerView = findViewById(R.id.recyclerView)
         progressBar = findViewById(R.id.user_list_progress_bar)
-
         adapter = UserListAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         progressBar.visibility = View.VISIBLE
+    }
 
-        mainViewModel.getUsers()
+    override fun onResume() {
+        super.onResume()
+
+
+
+
 //            .enqueue(object : Callback<List<User>> {
 //                override fun onFailure(call: Call<List<User>>, t: Throwable) {
 //                    val message = getString(R.string.error)

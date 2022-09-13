@@ -3,7 +3,11 @@ package com.picpay.desafio.android.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.picpay.desafio.android.data.remote.UserService
+import com.picpay.desafio.android.repository.UserRepository
+import com.picpay.desafio.android.repository.UserRepositoryImpl
+import com.picpay.desafio.android.ui.MainViewModel
 import com.picpay.desafio.android.util.constants.retrofitConstants.URL
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -21,6 +25,8 @@ object AppInject {
                 .build()
                 .create(UserService::class.java)
         }
+        single<UserRepository> { UserRepositoryImpl(get()) }
+        viewModel { MainViewModel(get()) }
     }
 
     fun modules(): List<Module> =
