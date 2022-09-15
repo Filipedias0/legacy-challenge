@@ -4,6 +4,6 @@ import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.util.Resource
 
 interface UserRepository {
-    fun getUsers(): Resource<List<User>>
+    suspend fun getUsers(): Resource<List<User>>
 }
 

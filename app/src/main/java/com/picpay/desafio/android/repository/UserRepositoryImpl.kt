@@ -7,7 +7,7 @@ import com.picpay.desafio.android.util.Resource
 class UserRepositoryImpl(
     private val api: UserService
 ): UserRepository {
-    override fun getUsers(): Resource<List<User>> {
+    override suspend fun getUsers(): Resource<List<User>> {
         val response = try {
             api.getUsers()
         }catch (e: Exception){

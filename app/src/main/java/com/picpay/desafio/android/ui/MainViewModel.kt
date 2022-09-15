@@ -9,10 +9,11 @@ import com.picpay.desafio.android.repository.UserRepository
 import com.picpay.desafio.android.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val userRepository: UserRepository
-): ViewModel() {
+) : ViewModel() {
     //Create BaseViewModel with delegates
     private val _userListStateFlow = MutableStateFlow(listOf<User>())
     val userListStateFlow = _userListStateFlow.asStateFlow()
@@ -25,29 +26,30 @@ class MainViewModel(
     private val _loadingStatusStateFlow = MutableStateFlow("")
     val loadingStatusStateFlow = _loadingStatusStateFlow.asStateFlow()
 
-    fun getUsers(){
+    //Descobrir porquê a chamada está sempre dando erro
+    fun getUsers() {
         _loadingStateFlow.value = View.VISIBLE
 
-        when(
-            val response = userRepository.getUsers()
-        ){
-            is Resource.Succes -> {
-                response.data?.let {
-                    _userListStateFlow.value = it
+        viewModelScope.launch {
+            when (
+                val response = userRepository.getUsers()
+            ) {
+                is Resource.Succes -> {
+                    response.data?.let {
+                        _userListStateFlow.value = it
+                    }
                 }
-            }
 
-            is Resource.Error -> {
-                _loadingStateFlow.value = View.VISIBLE
-                response.message?.let{
-                    _loadingStatusStateFlow.value = it
+                is Resource.Error -> {
+                    _loadingStateFlow.value = View.VISIBLE
+                    response.message?.let {
+                        _loadingStatusStateFlow.value = it
+                    }
                 }
-            }
-            else -> {
-                _loadingStateFlow.value = View.GONE
+                else -> {
+                    _loadingStateFlow.value = View.GONE
+                }
             }
         }
     }
-
-
 }
