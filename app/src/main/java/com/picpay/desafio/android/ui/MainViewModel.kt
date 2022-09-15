@@ -26,7 +26,7 @@ class MainViewModel(
     private val _loadingStatusStateFlow = MutableStateFlow("")
     val loadingStatusStateFlow = _loadingStatusStateFlow.asStateFlow()
 
-    //Descobrir porquê a chamada está sempre dando erro
+    //Descobrir porque o loading aparece no meio da tela no scroll
     fun getUsers() {
         _loadingStateFlow.value = View.VISIBLE
 
@@ -35,13 +35,14 @@ class MainViewModel(
                 val response = userRepository.getUsers()
             ) {
                 is Resource.Succes -> {
+                    _loadingStateFlow.value = View.GONE
                     response.data?.let {
                         _userListStateFlow.value = it
                     }
                 }
 
                 is Resource.Error -> {
-                    _loadingStateFlow.value = View.VISIBLE
+                    _loadingStateFlow.value = View.GONE
                     response.message?.let {
                         _loadingStatusStateFlow.value = it
                     }
