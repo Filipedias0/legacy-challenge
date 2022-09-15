@@ -1,5 +1,7 @@
 package com.picpay.desafio.android.ui
 
+import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.data.model.User
@@ -15,14 +17,16 @@ class MainViewModel(
     private val _userListStateFlow = MutableStateFlow(listOf<User>())
     val userListStateFlow = _userListStateFlow.asStateFlow()
 
-    private val _loadingStateFlow = MutableStateFlow(false)
+    //val breakingNews: MutableLiveData<List<User>> = MutableLiveData()
+
+    private val _loadingStateFlow = MutableStateFlow(View.VISIBLE)
     val loadingStateFlow = _loadingStateFlow.asStateFlow()
 
     private val _loadingStatusStateFlow = MutableStateFlow("")
     val loadingStatusStateFlow = _loadingStatusStateFlow.asStateFlow()
 
     fun getUsers(){
-        _loadingStateFlow.value = true
+        _loadingStateFlow.value = View.VISIBLE
 
         when(
             val response = userRepository.getUsers()
@@ -34,13 +38,13 @@ class MainViewModel(
             }
 
             is Resource.Error -> {
-                _loadingStateFlow.value = false
+                _loadingStateFlow.value = View.VISIBLE
                 response.message?.let{
                     _loadingStatusStateFlow.value = it
                 }
             }
             else -> {
-                _loadingStateFlow.value = false
+                _loadingStateFlow.value = View.GONE
             }
         }
     }

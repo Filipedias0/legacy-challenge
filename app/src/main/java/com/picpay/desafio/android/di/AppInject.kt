@@ -6,7 +6,7 @@ import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.repository.UserRepository
 import com.picpay.desafio.android.repository.UserRepositoryImpl
 import com.picpay.desafio.android.ui.MainViewModel
-import com.picpay.desafio.android.util.constants.retrofitConstants.URL
+import com.picpay.desafio.android.util.constants.RetrofitConstants.URL
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
