@@ -32,25 +32,40 @@ class MainViewModel(
 
         viewModelScope.launch {
             when (
-                val response = userRepository.getUsers()
+                val response = userRepository.getUsersFromRemote()
             ) {
                 is Resource.Succes -> {
                     _loadingStateFlow.value = View.GONE
                     response.data?.let {
                         _userListStateFlow.value = it
+                        insertContactListIntoDb(it)
                     }
                 }
 
                 is Resource.Error -> {
+                    _userListStateFlow.value = getContactListFromDb()
                     _loadingStateFlow.value = View.GONE
                     response.message?.let {
                         _loadingStatusStateFlow.value = it
                     }
                 }
                 else -> {
+                    _userListStateFlow.value = getContactListFromDb()
                     _loadingStateFlow.value = View.GONE
                 }
             }
         }
+    }
+
+    private fun insertContactListIntoDb(user: List<User>) = viewModelScope.launch {
+        userRepository.insertContactListIntoDb(user)
+    }
+
+    private fun insertUserIntoDb(user: User) = viewModelScope.launch {
+        userRepository.insertUserIntoDb(user)
+    }
+
+    suspend private fun getContactListFromDb(): List<User> {
+            return userRepository.getContactListFromDb()
     }
 }

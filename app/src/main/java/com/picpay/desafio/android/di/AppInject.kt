@@ -26,7 +26,7 @@ object AppInject {
                 .build()
                 .create(UserService::class.java)
         }
-        single<UserRepository> { UserRepositoryImpl(get()) }
+        single<UserRepository> { UserRepositoryImpl(get(), get()) }
         single {
             Room.databaseBuilder(
                 androidApplication(),

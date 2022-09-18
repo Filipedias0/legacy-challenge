@@ -1,10 +1,9 @@
 package com.picpay.desafio.android.db
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.picpay.desafio.android.data.model.User
+import retrofit2.http.GET
 
 @Dao
 interface UserDAO {
@@ -13,7 +12,10 @@ interface UserDAO {
     suspend fun insertUser(user: User)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertContacts(user: List<User>)
+    suspend fun insertContactList(user: List<User>)
+
+    @Query("SELECT * FROM user_table")
+    suspend fun getContacts(): List<User>
 
     @Delete()
     suspend fun deleteUser(user: User)

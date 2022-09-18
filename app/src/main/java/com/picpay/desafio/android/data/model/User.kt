@@ -11,8 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class User(
     @SerializedName("img") val img: String,
     @SerializedName("name") val name: String,
-    @SerializedName("username") val username: String
-) : Parcelable{
+    @SerializedName("username") val username: String,
     @PrimaryKey(autoGenerate = true)
-    @SerializedName("id") val id: Int? = null
-}
+@SerializedName("id") val id: Int? = null
+) : Parcelable
