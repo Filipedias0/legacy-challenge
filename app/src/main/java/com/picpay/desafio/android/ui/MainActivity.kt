@@ -32,9 +32,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
 
-//        viewModel.breakingNews.observe(this){
-//            adapter.users = it
-//        }
         recyclerView = findViewById(R.id.recyclerView)
         progressBar = findViewById(R.id.user_list_progress_bar)
         adapter = UserListAdapter()
@@ -42,30 +39,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         progressBar.visibility = View.VISIBLE
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-
-
-
-//            .enqueue(object : Callback<List<User>> {
-//                override fun onFailure(call: Call<List<User>>, t: Throwable) {
-//                    val message = getString(R.string.error)
-//
-//                    progressBar.visibility = View.GONE
-//                    recyclerView.visibility = View.GONE
-//
-//                    Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//
-//                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-//                    progressBar.visibility = View.GONE
-//
-//                    adapter.users = response.body()!!
-//                }
-//            })
     }
 }
