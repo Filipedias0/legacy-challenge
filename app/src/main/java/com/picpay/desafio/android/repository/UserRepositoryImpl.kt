@@ -1,6 +1,5 @@
 package com.picpay.desafio.android.repository
 
-import androidx.lifecycle.LiveData
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.db.UserDAO

@@ -1,9 +1,7 @@
 package com.picpay.desafio.android.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.picpay.desafio.android.data.model.User
-import retrofit2.http.GET
 
 @Dao
 interface UserDAO {
