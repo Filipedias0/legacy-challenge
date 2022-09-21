@@ -16,6 +16,11 @@ import com.picpay.desafio.android.db.UserDatabase
 import com.picpay.desafio.android.repository.UserRepository
 import com.picpay.desafio.android.repository.UserRepositoryImpl
 import com.picpay.desafio.android.util.constants.Constants
+import com.picpay.desafio.android.utils.androidTestContants
+import com.picpay.desafio.android.utils.androidTestContants.errorResponse
+import com.picpay.desafio.android.utils.androidTestContants.serverPort
+import com.picpay.desafio.android.utils.androidTestContants.successResponse
+import com.picpay.desafio.android.utils.androidTestContants.userReponseData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -51,20 +56,6 @@ class MainViewModelIntegrationTest : KoinTest {
     @get:Rule
     val mockWebServer = MockWebServer()
 
-    companion object {
-        private const val serverPort = 8080
-        private const val body =
-            "[{\"id\":1,\"name\":\"name\",\"img\":\"img\",\"username\":\"userName\"}]"
-        private val userReponseData = User("img", "name", "userName", 1)
-
-        private val successResponse by lazy {
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(body)
-        }
-
-        private val errorResponse by lazy { MockResponse().setResponseCode(404) }
-    }
 
     private val server = MockWebServer()
     private lateinit var userDatabase: UserDatabase
@@ -113,10 +104,10 @@ class MainViewModelIntegrationTest : KoinTest {
     @Test
     fun getUsersSaveItemsIntoDbOnSuccess() = runBlocking {
         server.start(serverPort)
+
             viewModel.insertContactListIntoDb(listOf(userReponseData)).apply {
                 assertThat(userDao.getContacts()).isNotEmpty()
             }
-
 
         server.close()
     }
