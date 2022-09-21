@@ -23,6 +23,7 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -91,12 +92,6 @@ class MainViewModelIntegrationTest : KoinTest {
             .create(UserService::class.java)
 
 
-        viewModel = MainViewModel(UserRepositoryImpl(api, userDao))
-    }
-
-
-    @Test
-    fun getUsersSaveItemsIntoDbOnSuccess() = runBlocking {
         server.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return when (request.path) {
@@ -107,29 +102,30 @@ class MainViewModelIntegrationTest : KoinTest {
             }
         }
 
-        server.start(serverPort).apply {
+        viewModel = MainViewModel(UserRepositoryImpl(api, userDao))
+    }
+
+    @After
+    fun closeDb(){
+        userDatabase.close()
+    }
+
+    @Test
+    fun getUsersSaveItemsIntoDbOnSuccess() = runBlocking {
+        server.start(serverPort)
             viewModel.insertContactListIntoDb(listOf(userReponseData)).apply {
                 assertThat(userDao.getContacts()).isNotEmpty()
             }
-        }
+
 
         server.close()
     }
 
     @Test
     fun getUsersSaveItemsIntoDbOnSuccessWithNetwork() = runBlocking {
-        server.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return when (request.path) {
-                    "/user" -> successResponse
-                    else -> errorResponse
-                }
-
-            }
-        }
 
         server.start(serverPort).apply {
-            viewModel.insertContactListIntoDb(listOf(userReponseData)).apply {
+            viewModel.getUsers().apply {
                 assertThat(userDao.getContacts()).isNotEmpty()
             }
         }
