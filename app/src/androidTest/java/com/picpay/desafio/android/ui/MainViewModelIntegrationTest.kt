@@ -1,6 +1,7 @@
 package com.picpay.desafio.android.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
@@ -40,7 +41,7 @@ import retrofit2.http.GET
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
-class MainViewModelIntegrationTest: KoinTest {
+class MainViewModelIntegrationTest : KoinTest {
 
 
     @get:Rule
@@ -51,7 +52,8 @@ class MainViewModelIntegrationTest: KoinTest {
 
     companion object {
         private const val serverPort = 8080
-        private const val body = "[{\"id\":1,\"name\":\"name\",\"img\":\"img\",\"username\":\"userName\"}]"
+        private const val body =
+            "[{\"id\":1,\"name\":\"name\",\"img\":\"img\",\"username\":\"userName\"}]"
         private val userReponseData = User("img", "name", "userName", 1)
 
         private val successResponse by lazy {
@@ -64,49 +66,70 @@ class MainViewModelIntegrationTest: KoinTest {
     }
 
     private val server = MockWebServer()
+    private lateinit var userDatabase: UserDatabase
+    private lateinit var userDao: UserDAO
+    private lateinit var viewModel: MainViewModel
+    private lateinit var api: UserService
 
     @Before
-    fun setup(){
-        declareMock<UserRepository>()
-    }
+    fun setup() {
+        userDatabase = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getInstrumentation().context,
+            UserDatabase::class.java
+        ).allowMainThreadQueries().build()
 
-    private val mockRepository: UserRepository by inject()
-    //private val userDao: UserDAO by inject()
+        userDao = userDatabase.getUserDao()
 
-    private val api by lazy {
-        Retrofit.Builder()
+        api = Retrofit.Builder()
             .baseUrl(Constants.URL)
             .client(
                 OkHttpClient.Builder()
-                .build())
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(UserService::class.java)
+
+
+        viewModel = MainViewModel(UserRepositoryImpl(api, userDao))
     }
 
-    private val userDao by lazy {
-        Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getInstrumentation().context,
-            UserDatabase::class.java
-        ).allowMainThreadQueries().build().getUserDao()
-    }
-
-    private val viewModel = MainViewModel(UserRepositoryImpl(api, userDao))
 
     @Test
-    fun getUsersSaveItemsIntoDbOnSuccess() = runBlocking{
+    fun getUsersSaveItemsIntoDbOnSuccess() = runBlocking {
         server.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return when (request.path) {
                     "/user" -> successResponse
-                    else -> successResponse
+                    else -> errorResponse
                 }
 
             }
         }
 
         server.start(serverPort).apply {
-            viewModel.getUsers().apply {
+            viewModel.insertContactListIntoDb(listOf(userReponseData)).apply {
+                assertThat(userDao.getContacts()).isNotEmpty()
+            }
+        }
+
+        server.close()
+    }
+
+    @Test
+    fun getUsersSaveItemsIntoDbOnSuccessWithNetwork() = runBlocking {
+        server.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                return when (request.path) {
+                    "/user" -> successResponse
+                    else -> errorResponse
+                }
+
+            }
+        }
+
+        server.start(serverPort).apply {
+            viewModel.insertContactListIntoDb(listOf(userReponseData)).apply {
                 assertThat(userDao.getContacts()).isNotEmpty()
             }
         }

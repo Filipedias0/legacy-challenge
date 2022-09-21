@@ -56,7 +56,7 @@ class MainViewModel(
         }
     }
 
-    private fun insertContactListIntoDb(user: List<User>) = viewModelScope.launch {
+    fun insertContactListIntoDb(user: List<User>) = viewModelScope.launch {
         userRepository.insertContactListIntoDb(user)
     }
 
