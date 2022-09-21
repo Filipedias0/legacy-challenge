@@ -30,7 +30,7 @@ class MainViewModel(
         _loadingStateFlow.value = View.VISIBLE
 
         viewModelScope.launch {
-            val response = userRepository.getUsersFromRemote()
+             val response = userRepository.getUsersFromRemote()
             _loadingStateFlow.value = View.GONE
 
             when (
@@ -57,6 +57,10 @@ class MainViewModel(
     }
 
     private fun insertContactListIntoDb(user: List<User>) = viewModelScope.launch {
+        userRepository.insertContactListIntoDb(user)
+    }
+
+    fun teste(user: List<User>) = viewModelScope.launch {
         userRepository.insertContactListIntoDb(user)
     }
 

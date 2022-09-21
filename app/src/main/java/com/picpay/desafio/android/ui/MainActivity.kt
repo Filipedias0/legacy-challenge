@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: UserListAdapter
     private val viewModel: MainViewModel by viewModel()
-    //IMPLEMENTAR VIEW BINDING
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getUsers()
@@ -38,6 +38,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        progressBar.visibility = View.VISIBLE
     }
 }
