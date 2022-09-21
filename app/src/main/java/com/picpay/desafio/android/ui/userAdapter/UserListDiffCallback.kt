@@ -3,7 +3,6 @@ package com.picpay.desafio.android.ui.userAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.picpay.desafio.android.data.model.User
 
-//TORNAR ESTA CLASSE REUTILIZAVEL MUDANDO O TIPO DA LISTA PARA LIST<T>
 class UserListDiffCallback(
     private val oldList: List<User>,
     private val newList: List<User>

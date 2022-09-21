@@ -1,27 +1,20 @@
 package com.picpay.desafio.android.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.whenever
-import com.picpay.desafio.android.MainActivityTest
-import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.db.UserDAO
 import com.picpay.desafio.android.db.UserDatabase
-import com.picpay.desafio.android.repository.UserRepository
 import com.picpay.desafio.android.repository.UserRepositoryImpl
 import com.picpay.desafio.android.util.constants.Constants
-import com.picpay.desafio.android.utils.androidTestContants
 import com.picpay.desafio.android.utils.androidTestContants.errorResponse
 import com.picpay.desafio.android.utils.androidTestContants.serverPort
 import com.picpay.desafio.android.utils.androidTestContants.successResponse
 import com.picpay.desafio.android.utils.androidTestContants.userReponseData
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
@@ -33,17 +26,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.startKoin
 import org.koin.test.KoinTest
-import org.koin.test.inject
-import org.koin.test.mock.declareMock
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
