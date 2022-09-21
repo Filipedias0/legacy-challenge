@@ -9,6 +9,7 @@ import com.picpay.desafio.android.repository.UserRepositoryImpl
 import com.picpay.desafio.android.ui.MainViewModel
 import com.picpay.desafio.android.util.constants.Constants.URL
 import com.picpay.desafio.android.util.constants.Constants.USER_DATABASE_NAME
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -23,6 +24,10 @@ object AppInject {
             Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(
+                    OkHttpClient.Builder()
+                    .build()
+                )
                 .build()
                 .create(UserService::class.java)
         }
