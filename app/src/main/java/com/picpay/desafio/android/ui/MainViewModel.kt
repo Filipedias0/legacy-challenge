@@ -60,10 +60,6 @@ class MainViewModel(
         userRepository.insertContactListIntoDb(user)
     }
 
-    fun teste(user: List<User>) = viewModelScope.launch {
-        userRepository.insertContactListIntoDb(user)
-    }
-
     private fun insertUserIntoDb(user: User) = viewModelScope.launch {
         userRepository.insertUserIntoDb(user)
     }

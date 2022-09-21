@@ -2,27 +2,49 @@ package com.picpay.desafio.android.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
+import com.picpay.desafio.android.databinding.ActivityMainBinding
 import com.picpay.desafio.android.ui.userAdapter.UserListAdapter
 import com.picpay.desafio.android.util.collectLatestLifecycleFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
+    private lateinit var adapter: UserListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var adapter: UserListAdapter
     private val viewModel: MainViewModel by viewModel()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getUsers()
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
+        bindView(binding)
 
+        setupRecyclerView()
+        subscribeToFlow()
+        viewModel.getUsers()
+    }
+
+    private fun setupRecyclerView(){
+        adapter = UserListAdapter()
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+    private fun bindView(binding: ActivityMainBinding){
+        recyclerView = binding.recyclerView
+        progressBar = binding.userListProgressBar
+    }
+
+    private fun subscribeToFlow(){
         collectLatestLifecycleFlow(viewModel.loadingStateFlow) { loadingState ->
             progressBar.visibility = loadingState
         }
@@ -30,13 +52,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         collectLatestLifecycleFlow(viewModel.userListStateFlow) { userList ->
             adapter.users = userList
         }
-
-
-        recyclerView = findViewById(R.id.recyclerView)
-        progressBar = findViewById(R.id.user_list_progress_bar)
-        adapter = UserListAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
     }
 }
