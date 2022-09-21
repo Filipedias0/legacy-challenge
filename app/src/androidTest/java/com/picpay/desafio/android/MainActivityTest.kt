@@ -1,6 +1,7 @@
 package com.picpay.desafio.android
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.picpay.desafio.android.ui.MainActivity
@@ -42,6 +43,17 @@ class MainActivityTest {
         ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.recyclerView)).check(RecyclerViewItemCountAssertion())
+
+        server.close()
+    }
+
+    @Test
+    fun recyclerViewVisibleOnCreateActivity() {
+        server.start(serverPort)
+
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
 
         server.close()
     }
