@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import com.picpay.desafio.android.MainCoroutineRule
+import com.picpay.desafio.android.utils.MainCoroutineRule
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.repository.UserRepository
 import com.picpay.desafio.android.util.Resource

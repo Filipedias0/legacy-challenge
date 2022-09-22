@@ -1,18 +1,13 @@
 package com.picpay.desafio.android.db
 
-import android.view.View
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.picpay.desafio.android.data.model.User
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @MediumTest
@@ -21,9 +16,6 @@ class UserDAOTest {
 
     private lateinit var userDatabase: UserDatabase
     private lateinit var userDAO: UserDAO
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     //TODO IMPLEMENT USER FACTORY
     @Before

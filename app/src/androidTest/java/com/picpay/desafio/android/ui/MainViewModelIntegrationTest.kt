@@ -1,6 +1,6 @@
 package com.picpay.desafio.android.ui
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+//import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
@@ -26,17 +26,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.test.KoinTest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
-class MainViewModelIntegrationTest : KoinTest {
-
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+class MainViewModelIntegrationTest {
 
     @get:Rule
     val mockWebServer = MockWebServer()
@@ -97,15 +92,15 @@ class MainViewModelIntegrationTest : KoinTest {
         server.close()
     }
 
-    @Test
-    fun getUsersSaveItemsIntoDbOnSuccessWithNetwork() = runBlocking {
-
-        server.start(serverPort).apply {
-            viewModel.getUsers().apply {
-                assertThat(userDao.getContacts()).isNotEmpty()
-            }
-        }
-
-        server.close()
-    }
+//    @Test
+//    fun getUsersSaveItemsIntoDbOnSuccessWithNetwork() = runBlocking {
+//
+//        server.start(serverPort).apply {
+//            viewModel.getUsers().apply {
+//                assertThat(userDao.getContacts()).isNotEmpty()
+//            }
+//        }
+//
+//        server.close()
+//    }
 }
