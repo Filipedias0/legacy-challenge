@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.utils
+package com.picpay.desafio.android.utils.dataMock
 
 import com.picpay.desafio.android.data.model.User
 import okhttp3.mockwebserver.MockResponse

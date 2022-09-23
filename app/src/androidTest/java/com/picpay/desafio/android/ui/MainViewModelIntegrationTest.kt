@@ -13,10 +13,12 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.db.UserDAO
 import com.picpay.desafio.android.db.UserDatabase
-import com.picpay.desafio.android.domain.repository.UserRepositoryImpl
+import com.picpay.desafio.android.data.repository.UserRepositoryImpl
+import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
+import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
 import com.picpay.desafio.android.ui.viewModels.MainViewModel
 import com.picpay.desafio.android.util.Resource
-import com.picpay.desafio.android.utils.UserMock.listOfMockedUser
+import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUser
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -43,27 +45,33 @@ class MainViewModelIntegrationTest {
 
         repository = UserRepositoryImpl(api, userDao)
 
-        viewModel = MainViewModel(repository)
+        viewModel = MainViewModel(
+            repository,
+            GetUsersFromRemote(repository),
+            InsertContactListIntoDb(repository)
+        )
     }
 
     @After
-    fun closeDb(){
+    fun closeDb() {
         userDatabase.close()
     }
 
     @Test
     fun getUsersSaveItemsIntoDbOnSuccess(): Unit = runBlocking {
-            viewModel.insertContactListIntoDb(listOfMockedUser).let {
-                assertThat(userDao.getContacts()).isNotEmpty()
-            }
+        whenever(api.getUsers()).thenReturn(listOfMockedUser)
+
+        viewModel.getUsers().let {
+            assertThat(userDao.getContacts()).isNotEmpty()
+        }
     }
 
     @Test
     fun repositoryCallsApi() = runBlocking {
-    whenever(api.getUsers()).thenReturn(listOfMockedUser)
-            repository.getUsersFromRemote().let {
-                assertThat(it.data).isEqualTo(listOfMockedUser)
-            }
+        whenever(api.getUsers()).thenReturn(listOfMockedUser)
+        repository.getUsersFromRemote().let {
+            assertThat(it.data).isEqualTo(listOfMockedUser)
+        }
     }
 
     @Test

@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.ui.ViewHolders.UserListItemViewHolder
+import com.picpay.desafio.android.ui.viewHolders.UserListItemViewHolder
 import com.picpay.desafio.android.ui.userAdapter.UserListDiffCallback
 
 class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {

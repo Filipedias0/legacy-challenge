@@ -34,7 +34,7 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         repository = mock()
-        viewModel = MainViewModel(mock())
+        viewModel = MainViewModel(mock(), mock(), mock())
         user = mock()
         resourceSuccess = mock()
         resourceError = mock()

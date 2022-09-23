@@ -6,6 +6,8 @@ import com.picpay.desafio.android.db.UserDAO
 import com.picpay.desafio.android.db.UserDatabase
 import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
+import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
+import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
 import com.picpay.desafio.android.ui.viewModels.MainViewModel
 import com.picpay.desafio.android.util.constants.Constants.URL
 import com.picpay.desafio.android.util.constants.Constants.USER_DATABASE_NAME
@@ -20,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object AppInject {
 
     private val viewModelsModule = module {
-        viewModel { MainViewModel(get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
     }
 
     private val dataModule = module {
@@ -52,9 +54,15 @@ object AppInject {
         }
     }
 
+    private val useCasesModule = module {
+        factory<GetUsersFromRemote> { GetUsersFromRemote(get()) }
+        factory<InsertContactListIntoDb> { InsertContactListIntoDb(get()) }
+    }
+
     fun modules(): List<Module> =
         ArrayList<Module>().apply {
             add(dataModule)
+            add(useCasesModule)
             add(viewModelsModule)
         }
 }

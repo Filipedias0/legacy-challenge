@@ -5,9 +5,8 @@ import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.utils.UserMock
-import com.picpay.desafio.android.utils.UserMock.listOfMockedUser
-import com.picpay.desafio.android.utils.UserMock.mockedUser
+import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUser
+import com.picpay.desafio.android.utils.dataMock.UserMock.mockedUser
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

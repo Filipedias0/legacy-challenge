@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.domain.repository.UserRepository
+import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
+import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
 import com.picpay.desafio.android.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +14,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val userRepository: UserRepository,
+    private val getUsersFromRemote: GetUsersFromRemote,
+    private val insertContactListIntoDb: InsertContactListIntoDb
 ) : ViewModel() {
     //Create BaseViewModel with delegates
     private val _userListStateFlow = MutableStateFlow(listOf<User>())
@@ -27,7 +31,7 @@ class MainViewModel(
         _loadingStateFlow.value = View.VISIBLE
 
         viewModelScope.launch {
-             val response = userRepository.getUsersFromRemote()
+             val response = getUsersFromRemote()
             _loadingStateFlow.value = View.GONE
 
             when (
@@ -51,14 +55,6 @@ class MainViewModel(
                 }
             }
         }
-    }
-
-    fun insertContactListIntoDb(user: List<User>) = viewModelScope.launch {
-        userRepository.insertContactListIntoDb(user)
-    }
-
-    private fun insertUserIntoDb(user: User) = viewModelScope.launch {
-        userRepository.insertUserIntoDb(user)
     }
 
     private suspend fun getContactListFromDb(): List<User> {
