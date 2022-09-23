@@ -4,9 +4,9 @@ import androidx.room.Room
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.db.UserDAO
 import com.picpay.desafio.android.db.UserDatabase
-import com.picpay.desafio.android.repository.UserRepository
-import com.picpay.desafio.android.repository.UserRepositoryImpl
-import com.picpay.desafio.android.ui.MainViewModel
+import com.picpay.desafio.android.domain.repository.UserRepository
+import com.picpay.desafio.android.domain.repository.UserRepositoryImpl
+import com.picpay.desafio.android.ui.viewModels.MainViewModel
 import com.picpay.desafio.android.util.constants.Constants.URL
 import com.picpay.desafio.android.util.constants.Constants.USER_DATABASE_NAME
 import okhttp3.OkHttpClient

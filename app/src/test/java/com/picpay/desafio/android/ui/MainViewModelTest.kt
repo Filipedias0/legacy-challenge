@@ -7,7 +7,8 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import com.picpay.desafio.android.utils.MainCoroutineRule
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.repository.UserRepository
+import com.picpay.desafio.android.domain.repository.UserRepository
+import com.picpay.desafio.android.ui.viewModels.MainViewModel
 import com.picpay.desafio.android.util.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

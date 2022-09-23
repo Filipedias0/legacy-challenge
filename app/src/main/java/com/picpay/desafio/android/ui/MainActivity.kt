@@ -1,16 +1,15 @@
 package com.picpay.desafio.android.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.databinding.ActivityMainBinding
-import com.picpay.desafio.android.ui.userAdapter.UserListAdapter
+import com.picpay.desafio.android.util.UserListAdapter
+import com.picpay.desafio.android.ui.viewModels.MainViewModel
 import com.picpay.desafio.android.util.collectLatestLifecycleFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

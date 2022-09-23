@@ -97,6 +97,7 @@ dependencies {
     debugImplementation "androidx.fragment:fragment-testing:$fragment_ktx_version"
     testImplementation "androidx.arch.core:core-testing:$core_testing_version"
 
+    androidTestImplementation 'org.mockito:mockito-android:4.8.0'
     androidTestImplementation "androidx.test.ext:junit-ktx:$test_ext_junit_ktx_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test:core-ktx:$core_ktx_test_version"

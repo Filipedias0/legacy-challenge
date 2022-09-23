@@ -1,16 +1,13 @@
-package com.picpay.desafio.android.ui
+package com.picpay.desafio.android.ui.viewModels
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.repository.UserRepository
-import com.picpay.desafio.android.util.DispatcherProvider
+import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class MainViewModel(

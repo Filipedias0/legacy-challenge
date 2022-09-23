@@ -5,43 +5,32 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.db.UserDAO
 import com.picpay.desafio.android.db.UserDatabase
-import com.picpay.desafio.android.repository.UserRepositoryImpl
-import com.picpay.desafio.android.util.constants.Constants
-import com.picpay.desafio.android.utils.androidTestContants.errorResponse
-import com.picpay.desafio.android.utils.androidTestContants.serverPort
-import com.picpay.desafio.android.utils.androidTestContants.successResponse
-import com.picpay.desafio.android.utils.androidTestContants.userReponseData
+import com.picpay.desafio.android.domain.repository.UserRepositoryImpl
+import com.picpay.desafio.android.ui.viewModels.MainViewModel
+import com.picpay.desafio.android.util.Resource
+import com.picpay.desafio.android.utils.UserMock.listOfMockedUser
 import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
 class MainViewModelIntegrationTest {
-
-    @get:Rule
-    val mockWebServer = MockWebServer()
-
-
-    private val server = MockWebServer()
     private lateinit var userDatabase: UserDatabase
     private lateinit var userDao: UserDAO
     private lateinit var viewModel: MainViewModel
-    private lateinit var api: UserService
+    private lateinit var repository: UserRepositoryImpl
+    val api: UserService = mock()
 
     @Before
     fun setup() {
@@ -52,28 +41,9 @@ class MainViewModelIntegrationTest {
 
         userDao = userDatabase.getUserDao()
 
-        api = Retrofit.Builder()
-            .baseUrl(Constants.URL)
-            .client(
-                OkHttpClient.Builder()
-                    .build()
-            )
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(UserService::class.java)
+        repository = UserRepositoryImpl(api, userDao)
 
-
-        server.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return when (request.path) {
-                    "/user" -> successResponse
-                    else -> errorResponse
-                }
-
-            }
-        }
-
-        viewModel = MainViewModel(UserRepositoryImpl(api, userDao))
+        viewModel = MainViewModel(repository)
     }
 
     @After
@@ -82,25 +52,49 @@ class MainViewModelIntegrationTest {
     }
 
     @Test
-    fun getUsersSaveItemsIntoDbOnSuccess() = runBlocking {
-        server.start(serverPort)
-
-            viewModel.insertContactListIntoDb(listOf(userReponseData)).apply {
+    fun getUsersSaveItemsIntoDbOnSuccess(): Unit = runBlocking {
+            viewModel.insertContactListIntoDb(listOfMockedUser).let {
                 assertThat(userDao.getContacts()).isNotEmpty()
             }
-
-        server.close()
     }
 
-//    @Test
-//    fun getUsersSaveItemsIntoDbOnSuccessWithNetwork() = runBlocking {
-//
-//        server.start(serverPort).apply {
-//            viewModel.getUsers().apply {
-//                assertThat(userDao.getContacts()).isNotEmpty()
-//            }
-//        }
-//
-//        server.close()
-//    }
+    @Test
+    fun repositoryCallsApi() = runBlocking {
+    whenever(api.getUsers()).thenReturn(listOfMockedUser)
+            repository.getUsersFromRemote().let {
+                assertThat(it.data).isEqualTo(listOfMockedUser)
+            }
+    }
+
+    @Test
+    fun getUserCallsRemote(): Unit = runBlocking {
+        whenever(api.getUsers()).thenReturn(listOfMockedUser)
+        viewModel.getUsers().let {
+            verify(api).getUsers()
+        }
+    }
+
+    @Test
+    fun getUserInsertReponseDataIntoDb(): Unit = runBlocking {
+        whenever(api.getUsers()).thenReturn(listOfMockedUser)
+        viewModel.getUsers().let {
+            val userIsInserted = userDao.getContacts()
+            assertThat(userIsInserted).isEqualTo(listOfMockedUser)
+        }
+    }
+
+    @Test
+    fun getUserFromDbWhenResourceIsNotSuccess(): Unit = runBlocking {
+        whenever(api.getUsers()).thenReturn(listOfMockedUser)
+        viewModel.getUsers()
+
+        whenever(repository.getUsersFromRemote()).thenReturn(Resource.Error("", null))
+        viewModel.getUsers().let {
+            viewModel.userListStateFlow.test {
+                val emission = awaitItem()
+                assertThat(emission).isEqualTo(listOfMockedUser)
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+    }
 }

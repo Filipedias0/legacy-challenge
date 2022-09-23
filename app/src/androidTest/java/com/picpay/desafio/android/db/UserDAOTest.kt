@@ -5,6 +5,9 @@ import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.picpay.desafio.android.data.model.User
+import com.picpay.desafio.android.utils.UserMock
+import com.picpay.desafio.android.utils.UserMock.listOfMockedUser
+import com.picpay.desafio.android.utils.UserMock.mockedUser
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -12,7 +15,6 @@ import org.junit.Test
 
 @MediumTest
 class UserDAOTest {
-
 
     private lateinit var userDatabase: UserDatabase
     private lateinit var userDAO: UserDAO
@@ -31,31 +33,28 @@ class UserDAOTest {
     @After
     fun closeDb(){
         userDatabase.close()
+
     }
 
     @Test
     fun insertContactListIntoDb() = runBlocking{
-        val userList = listOf(User("img", "Name", "UserName", 1))
-        userDAO.insertContactList(userList)
+        userDAO.insertContactList(listOfMockedUser)
 
-        assertThat(userDAO.getContacts()).isEqualTo(userList)
+        assertThat(userDAO.getContacts()).isEqualTo(listOfMockedUser)
     }
 
     @Test
     fun insertUserIntoDb() = runBlocking{
-        val userList = User("img", "Name", "UserName", 1)
-        userDAO.insertUser(userList)
+        userDAO.insertUser(mockedUser)
 
-        assertThat(userDAO.getContacts()).isEqualTo(listOf(userList))
+        assertThat(userDAO.getContacts()).isEqualTo(listOf(mockedUser))
     }
 
     @Test
     fun deleteUserFromDb () = runBlocking{
-        val user = User("img", "Name", "UserName", 1)
-        val userList = listOf(user)
-        userDAO.insertContactList(userList)
+        userDAO.insertUser(mockedUser)
 
-        userDAO.deleteUser(user)
+        userDAO.deleteUser(mockedUser)
 
         assertThat(userDAO.getContacts()).isEqualTo(listOf<User>())
     }
