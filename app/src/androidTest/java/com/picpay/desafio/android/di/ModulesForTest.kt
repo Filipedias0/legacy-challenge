@@ -1,5 +1,6 @@
 package com.picpay.desafio.android.di
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.picpay.desafio.android.data.remote.UserService
 import okhttp3.OkHttpClient
 import org.koin.core.context.loadKoinModules
@@ -21,7 +22,7 @@ object ModulesForTest {
                         .build()
                 )
                 .build()
-                .create(UserService::class.java)
+                .create(T::class.java)
         }
     }
 

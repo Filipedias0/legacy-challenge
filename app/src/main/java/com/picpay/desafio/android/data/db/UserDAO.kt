@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.db
+package com.picpay.desafio.android.data.db
 
 import androidx.room.*
 import com.picpay.desafio.android.data.model.User

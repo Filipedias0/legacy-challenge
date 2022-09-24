@@ -2,8 +2,8 @@ package com.picpay.desafio.android.di
 
 import androidx.room.Room
 import com.picpay.desafio.android.data.remote.UserService
-import com.picpay.desafio.android.db.UserDAO
-import com.picpay.desafio.android.db.UserDatabase
+import com.picpay.desafio.android.data.db.UserDAO
+import com.picpay.desafio.android.data.db.UserDatabase
 import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote

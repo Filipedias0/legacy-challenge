@@ -1,9 +1,11 @@
-package com.picpay.desafio.android.db
+package com.picpay.desafio.android.data.db
 
 import androidx.room.Room
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import com.picpay.desafio.android.data.db.UserDAO
+import com.picpay.desafio.android.data.db.UserDatabase
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUser
 import com.picpay.desafio.android.utils.dataMock.UserMock.mockedUser

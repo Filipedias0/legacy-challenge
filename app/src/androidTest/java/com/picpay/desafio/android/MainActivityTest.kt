@@ -24,14 +24,14 @@ class BaseFragmentTest {
     val rule = activityScenarioRule<MainActivity>()
 
     @Before
-    open fun setUp() {
+    fun setUp() {
         mockWebServer = MockWebServer()
         mockWebServer.dispatcher = MockServerDispatcher().RequestDispatcher()
         mockWebServer.start(8080)
     }
 
     @After
-    open fun tearDown() {
+    fun tearDown() {
         mockWebServer.shutdown()
     }
 

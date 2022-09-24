@@ -11,8 +11,8 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.picpay.desafio.android.data.remote.UserService
-import com.picpay.desafio.android.db.UserDAO
-import com.picpay.desafio.android.db.UserDatabase
+import com.picpay.desafio.android.data.db.UserDAO
+import com.picpay.desafio.android.data.db.UserDatabase
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
 import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb

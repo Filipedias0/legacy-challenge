@@ -2,7 +2,7 @@ package com.picpay.desafio.android.data.repository
 
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.remote.UserService
-import com.picpay.desafio.android.db.UserDAO
+import com.picpay.desafio.android.data.db.UserDAO
 import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.util.Resource
 
