@@ -9,7 +9,6 @@ import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
 import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
 import com.picpay.desafio.android.ui.viewModels.MainViewModel
-import com.picpay.desafio.android.util.constants.Constants.URL
 import com.picpay.desafio.android.util.constants.Constants.USER_DATABASE_NAME
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
@@ -20,6 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object AppInject {
+    private const val BASE_URL = "https://609a908e0f5a13001721b74e.mockapi.io/picpay/api/"
 
     private val viewModelsModule = module {
         viewModel { MainViewModel(get(), get(), get()) }
@@ -28,7 +28,7 @@ object AppInject {
     private val dataModule = module {
         single {
             Retrofit.Builder()
-                .baseUrl(URL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(
                     OkHttpClient.Builder()

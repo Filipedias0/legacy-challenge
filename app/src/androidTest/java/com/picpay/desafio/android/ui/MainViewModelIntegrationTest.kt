@@ -75,29 +75,29 @@ class MainViewModelIntegrationTest {
     }
 
     @Test
-    fun getUserCallsRemote(): Unit = runBlocking {
+    fun getUserCallsRemote() = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        viewModel.getUsers().let {
+        viewModel.getUsers().apply {
             verify(api).getUsers()
         }
     }
 
     @Test
-    fun getUserInsertReponseDataIntoDb(): Unit = runBlocking {
+    fun getUserInsertReponseDataIntoDb() = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        viewModel.getUsers().let {
+        viewModel.getUsers().apply {
             val userIsInserted = userDao.getContacts()
             assertThat(userIsInserted).isEqualTo(listOfMockedUser)
         }
     }
 
     @Test
-    fun getUserFromDbWhenResourceIsNotSuccess(): Unit = runBlocking {
+    fun getUserFromDbWhenResourceIsNotSuccess() = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
         viewModel.getUsers()
 
         whenever(repository.getUsersFromRemote()).thenReturn(Resource.Error("", null))
-        viewModel.getUsers().let {
+        viewModel.getUsers().apply {
             viewModel.userListStateFlow.test {
                 val emission = awaitItem()
                 assertThat(emission).isEqualTo(listOfMockedUser)

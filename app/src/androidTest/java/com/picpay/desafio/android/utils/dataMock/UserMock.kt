@@ -6,6 +6,8 @@ import okhttp3.mockwebserver.MockResponse
 object UserMock {
 
     const val serverPort = 8080
+    const val mockedBody =
+        "[{\"id\":1,\"name\":\"name\",\"img\":\"img\",\"username\":\"userName\"}]"
     const val body =
         "[{\"id\":1,\"name\":\"name\",\"img\":\"img\",\"username\":\"userName\"}]"
 
