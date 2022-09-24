@@ -15,7 +15,8 @@ android {
         versionName "1.0"
 
         vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "com.picpay.desafio.app.CustomInstrumentationRunner"
     }
     buildTypes {
         debug {}
@@ -101,7 +102,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit-ktx:$test_ext_junit_ktx_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test:core-ktx:$core_ktx_test_version"
-    androidTestImplementation "androidx.test:runner:$test_runner_version"
+    implementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test:rules:$test_rules_version"
     implementation "com.google.truth:truth:$truth_version"
     implementation "app.cash.turbine:turbine:0.7.0"
