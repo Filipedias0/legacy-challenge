@@ -2,13 +2,17 @@ package com.picpay.desafio.android
 
 import android.os.SystemClock
 import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.picpay.desafio.android.ui.MainActivity
 import com.picpay.desafio.android.utils.MockServerDispatcher
 import com.picpay.desafio.android.utils.RecyclerViewItemCountAssertion
@@ -19,13 +23,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class BaseFragmentTest {
+@LargeTest
+@RunWith(AndroidJUnit4ClassRunner::class)
+class MainActivityTest {
 
     lateinit var mockWebServer: MockWebServer
 
     @get: Rule
-    val rule = activityScenarioRule<MainActivity>()
+    val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {
@@ -48,19 +53,15 @@ class BaseFragmentTest {
     }
 
     @Test
-    fun teste(){
-        rule.scenario.moveToState(Lifecycle.State.CREATED)
+    fun recyclerViewLoadsList(){
 
         SystemClock.sleep(1000)
 
         Espresso.onView(withId(R.id.recyclerView))
                 .check(
                     matches(
-                        RecyclerViewItemCountAssertion().recyclerViewItemCountAssertion(0)
+                        RecyclerViewItemCountAssertion().recyclerViewItemCountAssertion(50)
                     )
                 )
-
-        //rule.scenario.moveToState(Lifecycle.State.RESUMED)
-
     }
 }

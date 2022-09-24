@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ModulesForTest {
-    private const val BASE_URL = "https://609a908e0f5a13001721b74e.mockapi.io/picpay/api/"
+    private const val BASE_URL = "http://127.0.0.1:8080"
 
     private fun dataModule() = module{
         single {
