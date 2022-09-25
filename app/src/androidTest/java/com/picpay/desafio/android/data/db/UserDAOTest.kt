@@ -34,7 +34,6 @@ class UserDAOTest {
     @After
     fun closeDb(){
         userDatabase.close()
-
     }
 
     @Test

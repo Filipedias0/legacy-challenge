@@ -3,14 +3,12 @@ package com.picpay.desafio.android
 import android.os.SystemClock
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.picpay.desafio.android.BaseUiTest.BaseUITest
 import com.picpay.desafio.android.di.generateTestAppComponent
-import com.picpay.desafio.android.ui.MainActivity
 import com.picpay.desafio.android.utils.RecyclerViewItemCountAssertion
 import org.junit.Before
 import org.junit.Test

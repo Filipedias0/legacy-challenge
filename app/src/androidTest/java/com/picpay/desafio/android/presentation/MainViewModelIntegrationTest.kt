@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.ui
+package com.picpay.desafio.android.presentation
 
 //import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -16,7 +16,7 @@ import com.picpay.desafio.android.data.db.UserDatabase
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
 import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
-import com.picpay.desafio.android.ui.viewModels.MainViewModel
+import com.picpay.desafio.android.presentation.viewModels.MainViewModel
 import com.picpay.desafio.android.util.Resource
 import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUser
 import kotlinx.coroutines.runBlocking

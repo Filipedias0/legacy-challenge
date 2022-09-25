@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.ui
+package com.picpay.desafio.android.presentation
 
 import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -8,7 +8,7 @@ import com.nhaarman.mockitokotlin2.*
 import com.picpay.desafio.android.utils.MainCoroutineRule
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.domain.repository.UserRepository
-import com.picpay.desafio.android.ui.viewModels.MainViewModel
+import com.picpay.desafio.android.presentation.viewModels.MainViewModel
 import com.picpay.desafio.android.util.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

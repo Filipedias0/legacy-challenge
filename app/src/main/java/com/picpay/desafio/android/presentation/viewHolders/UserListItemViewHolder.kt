@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.ui.viewHolders
+package com.picpay.desafio.android.presentation.viewHolders
 
 import android.view.LayoutInflater
 import android.view.View

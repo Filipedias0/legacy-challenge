@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.ui.viewModels
+package com.picpay.desafio.android.presentation.viewModels
 
 import android.view.View
 import androidx.lifecycle.ViewModel

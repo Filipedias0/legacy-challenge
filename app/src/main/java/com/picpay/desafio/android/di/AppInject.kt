@@ -8,7 +8,7 @@ import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
 import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
-import com.picpay.desafio.android.ui.viewModels.MainViewModel
+import com.picpay.desafio.android.presentation.viewModels.MainViewModel
 import com.picpay.desafio.android.util.constants.Constants.USER_DATABASE_NAME
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
