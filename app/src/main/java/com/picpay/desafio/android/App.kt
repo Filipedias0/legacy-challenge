@@ -5,12 +5,17 @@ import com.picpay.desafio.android.di.AppInject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App: Application() {
+open class App: Application() {
     override fun onCreate() {
         super.onCreate()
-        startKoin {
+        initiateKoin()
+    }
+
+    private fun initiateKoin(){
+        startKoin{
             androidContext(this@App)
-            modules(AppInject.modules())
+            modules(provideDependency())
         }
     }
+    open fun provideDependency() = AppInject.modules()
 }

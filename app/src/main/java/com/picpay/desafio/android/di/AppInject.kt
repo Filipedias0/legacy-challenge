@@ -25,7 +25,7 @@ object AppInject {
         viewModel { MainViewModel(get(), get(), get()) }
     }
 
-    private val dataModule = module {
+    private val networkModule = module{
         single {
             Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -37,6 +37,10 @@ object AppInject {
                 .build()
                 .create(UserService::class.java)
         }
+    }
+
+    private val dataModule = module {
+
 
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
 
@@ -64,6 +68,7 @@ object AppInject {
             add(dataModule)
             add(useCasesModule)
             add(viewModelsModule)
+            add(networkModule)
         }
 }
 

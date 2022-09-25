@@ -32,7 +32,7 @@ class MainViewModelIntegrationTest {
     private lateinit var userDao: UserDAO
     private lateinit var viewModel: MainViewModel
     private lateinit var repository: UserRepositoryImpl
-    val api: UserService = mock()
+    private val api: UserService = mock()
 
     @Before
     fun setup() {
@@ -61,48 +61,43 @@ class MainViewModelIntegrationTest {
     fun getUsersSaveItemsIntoDbOnSuccess(): Unit = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
 
-        viewModel.getUsers().let {
-            assertThat(userDao.getContacts()).isNotEmpty()
-        }
+        viewModel.getUsers()
+        assertThat(userDao.getContacts()).isNotEmpty()
     }
 
     @Test
     fun repositoryCallsApi() = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        repository.getUsersFromRemote().let {
-            assertThat(it.data).isEqualTo(listOfMockedUser)
-        }
+        val getUsersReturn = repository.getUsersFromRemote()
+        assertThat(getUsersReturn.data).isEqualTo(listOfMockedUser)
+
     }
 
     @Test
-    fun getUserCallsRemote() = runBlocking {
+    fun getUserCallsRemote(): Unit = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        viewModel.getUsers().apply {
-            verify(api).getUsers()
-        }
+        viewModel.getUsers()
+        verify(api).getUsers()
     }
 
     @Test
     fun getUserInsertReponseDataIntoDb() = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        viewModel.getUsers().apply {
-            val userIsInserted = userDao.getContacts()
-            assertThat(userIsInserted).isEqualTo(listOfMockedUser)
-        }
+        viewModel.getUsers()
+        val userIsInserted = userDao.getContacts()
+        assertThat(userIsInserted).isEqualTo(listOfMockedUser)
     }
 
     @Test
     fun getUserFromDbWhenResourceIsNotSuccess() = runBlocking {
-        whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        viewModel.getUsers()
+        userDao.insertContactList(listOfMockedUser)
 
         whenever(repository.getUsersFromRemote()).thenReturn(Resource.Error("", null))
-        viewModel.getUsers().apply {
-            viewModel.userListStateFlow.test {
-                val emission = awaitItem()
-                assertThat(emission).isEqualTo(listOfMockedUser)
-                cancelAndConsumeRemainingEvents()
-            }
+        viewModel.getUsers()
+        viewModel.userListStateFlow.test {
+            val emission = awaitItem()
+            assertThat(emission).isEqualTo(listOfMockedUser)
+            cancelAndConsumeRemainingEvents()
         }
     }
 }
