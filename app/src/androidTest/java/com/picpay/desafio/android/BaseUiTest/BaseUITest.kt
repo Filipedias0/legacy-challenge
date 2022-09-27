@@ -25,7 +25,7 @@ abstract class BaseUITest : KoinTest {
 
     @Before
     open fun setUp(){
-        startMockServer(true)
+        startMockServer()
     }
 
     /**
@@ -54,12 +54,9 @@ abstract class BaseUITest : KoinTest {
     /**
      * Start Mockwebserver
      */
-    private fun startMockServer(shouldStart:Boolean){
-        if (shouldStart){
-            mShouldStart = shouldStart
+    private fun startMockServer(){
             mockServer = MockWebServer()
             mockServer.start()
-        }
     }
 
     /**
