@@ -33,7 +33,7 @@ class ContactListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindView(binding)
         subscribeToObservers()
-        viewModel.getUsers()
+        viewModel.getUserList()
         setupRecyclerView()
     }
 
@@ -43,6 +43,7 @@ class ContactListFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
     }
+
     private fun bindView(binding: FragmentContactListBinding){
         recyclerView = binding.recyclerView
         progressBar = binding.userListProgressBar
@@ -50,7 +51,12 @@ class ContactListFragment : Fragment() {
 
     private fun subscribeToObservers(){
         collectLatestLifecycleFlow(viewModel.loadingStateFlow) { loadingState ->
-            progressBar.visibility = loadingState
+                if(loadingState){
+                    progressBar.visibility = View.VISIBLE
+                }
+                else{
+                    progressBar.visibility = View.GONE
+                }
         }
 
         collectLatestLifecycleFlow(viewModel.userListStateFlow) { userList ->
