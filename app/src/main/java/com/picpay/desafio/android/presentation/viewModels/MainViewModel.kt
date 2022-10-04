@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.domain.interactors.GetUsers
-import com.picpay.desafio.android.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,6 +19,7 @@ class MainViewModel(
     val loadingStateFlow = _loadingStateFlow.asStateFlow()
 
     private val _loadingStatusStateFlow = MutableStateFlow("")
+
     //Implement toast
     val loadingStatusStateFlow = _loadingStatusStateFlow.asStateFlow()
 
@@ -27,28 +27,22 @@ class MainViewModel(
         _loadingStateFlow.value = true
 
         viewModelScope.launch {
-             val response = getUsers()
+            val response = getUsers()
             _loadingStateFlow.value = false
 
-            when (
-                response
-            ) {
-                is Resource.Succes -> {
-                    response.data?.let {
-                        _userListStateFlow.value = it
-                    }
-                }
-
-                else -> {
-                    response.data?.let {
-                        _userListStateFlow.value = it
-                    }
-
-                    response.message?.let {
-                        _loadingStatusStateFlow.value = it
-                    }
-                }
+            response.onSuccess {
+                _userListStateFlow.value = it
             }
+
+            response.onFailure {
+                _loadingStatusStateFlow.value =
+                    if (it.message.isNullOrEmpty()) {
+                        "An unknown error ocurred"
+                    } else {
+                        it.message!!
+                    }
+            }
+
         }
     }
 }

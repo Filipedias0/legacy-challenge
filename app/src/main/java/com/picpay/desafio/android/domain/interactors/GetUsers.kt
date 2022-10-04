@@ -2,27 +2,29 @@ package com.picpay.desafio.android.domain.interactors
 
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.domain.repository.UserRepository
-import com.picpay.desafio.android.util.Resource
 
 class GetUsers(private val userRepository: UserRepository) {
 
-    suspend operator fun invoke(): Resource<List<User>> {
+    suspend operator fun invoke(): Result<List<User>> {
 
         val response = userRepository.getUsersFromRemote()
-        when (
-            response
-        ) {
-            is Resource.Succes -> {
-                response.data?.let {
-                    userRepository.insertContactListIntoDb(it)
+
+        response.onSuccess {
+            userRepository.insertContactListIntoDb(it)
+        }
+
+        if(response.isSuccess){
+            return response
+        }else{
+            return response.onFailure {
+                val userListFromDb = userRepository.getContactListFromDb()
+
+                return if (userListFromDb.isNotEmpty()){
+                    Result.success(userListFromDb)
+                }else{
+                    Result.failure(it)
                 }
             }
-
-            else -> {
-                val userListFromDb = userRepository.getContactListFromDb()
-                response.data = userListFromDb
-            }
         }
-        return response
     }
 }
