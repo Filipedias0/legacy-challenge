@@ -1,7 +1,6 @@
-package com.picpay.desafio.data.remote
+package com.picpay.desafio.android.data.remote
 
 import com.picpay.desafio.android.data.model.User
-import okhttp3.mockwebserver.MockResponse
 
 object UserMock {
     const val mockedBody =

@@ -13,15 +13,15 @@ class GetUsers(private val userRepository: UserRepository) {
             userRepository.insertContactListIntoDb(it)
         }
 
-        if(response.isSuccess){
+        if (response.isSuccess) {
             return response
-        }else{
+        } else {
             return response.onFailure {
                 val userListFromDb = userRepository.getContactListFromDb()
 
-                return if (userListFromDb.isNotEmpty()){
+                return if (userListFromDb.isNotEmpty()) {
                     Result.success(userListFromDb)
-                }else{
+                } else {
                     Result.failure(it)
                 }
             }

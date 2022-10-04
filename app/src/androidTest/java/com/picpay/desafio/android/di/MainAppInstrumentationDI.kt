@@ -4,8 +4,7 @@ import androidx.room.Room
 import com.picpay.desafio.android.data.db.UserDAO
 import com.picpay.desafio.android.data.db.UserDatabase
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
-import com.picpay.desafio.android.domain.interactors.GetUsersFromRemote
-import com.picpay.desafio.android.domain.interactors.InsertContactListIntoDb
+import com.picpay.desafio.android.domain.interactors.GetUsers
 import com.picpay.desafio.android.domain.repository.UserRepository
 import com.picpay.desafio.android.presentation.viewModels.MainViewModel
 import com.picpay.desafio.android.util.constants.Constants
@@ -27,8 +26,7 @@ val MockWebServerInstrumentationTest = module {
 }
 
 private val useCasesModule = module {
-    factory<GetUsersFromRemote> { GetUsersFromRemote(get()) }
-    factory<InsertContactListIntoDb> { InsertContactListIntoDb(get()) }
+    factory<GetUsers> { GetUsers(get()) }
 }
 
 private val dataModule = module {
@@ -50,7 +48,7 @@ private val dataModule = module {
 }
 
 private val viewModelsModule = module {
-    viewModel { MainViewModel(get(), get(), get()) }
+    viewModel { MainViewModel(get()) }
 }
 
 fun generateTestAppComponent(baseApi: String)
