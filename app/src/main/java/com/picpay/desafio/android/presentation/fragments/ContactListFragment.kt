@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.databinding.FragmentContactListBinding
 import com.picpay.desafio.android.presentation.viewModels.MainViewModel
-import com.picpay.desafio.android.util.UserListAdapter
+import com.picpay.desafio.android.presentation.userAdapter.UserListAdapter
 import com.picpay.desafio.android.util.collectLatestLifecycleFlow
 import org.koin.android.ext.android.inject
 
