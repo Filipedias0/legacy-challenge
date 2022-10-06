@@ -8,17 +8,18 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.data.db.UserDAO
 import com.picpay.desafio.android.data.db.UserDatabase
-import com.picpay.desafio.android.data.entity.UserDTO
+import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsers
-import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.presentation.viewModels.MainViewModel
 import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUserDTO
 import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUserModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.internal.wait
 import org.junit.After
 import org.junit.Before
@@ -58,8 +59,9 @@ class MainViewModelIntegrationTest {
     @Test
     fun getUsersSuccess(): Unit = runBlocking {
         whenever(api.getUsers()).thenReturn(listOfMockedUserModel)
-
         viewModel.getUserList()
+        delay(100)
+
         viewModel.userListStateFlow.test {
             val emission = awaitItem()
             assertThat(emission).isEqualTo(listOfMockedUserModel)
@@ -78,14 +80,17 @@ class MainViewModelIntegrationTest {
     @Test
     fun getUserFromDbWhenResourceIsNotSuccess() = runBlocking {
         userDao.insertContactList(listOfMockedUserDTO)
-
         whenever(repository.getUsersFromRemote()).thenReturn(Result.failure(Throwable("")))
         viewModel.getUserList()
+        delay(100)
 
         viewModel.userListStateFlow.test {
             val emission = awaitItem()
             assertThat(emission).isEqualTo(listOfMockedUserModel)
             cancelAndConsumeRemainingEvents()
+
+
         }
+
     }
 }
