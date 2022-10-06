@@ -1,15 +1,16 @@
 package com.picpay.desafio.android.data.repository
 
-import com.picpay.desafio.android.data.model.User
+import com.picpay.desafio.android.data.entity.UserDTO
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.data.db.UserDAO
+import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.domain.repository.UserRepository
 
 class UserRepositoryImpl(
     private val api: UserService,
     private val db: UserDAO
 ): UserRepository {
-    override suspend fun getUsersFromRemote(): Result<List<User>> {
+    override suspend fun getUsersFromRemote(): Result<List<UserModel>> {
         return try {
             val response = api.getUsers()
             Result.success(response)
@@ -19,20 +20,20 @@ class UserRepositoryImpl(
 
     }
 
-    override suspend fun insertContactListIntoDb(userList: List<User>){
-        db.insertContactList(userList)
+    override suspend fun insertContactListIntoDb(userDTOList: List<UserDTO>){
+        db.insertContactList(userDTOList)
     }
 
-    override suspend fun insertUserIntoDb(user: User){
-        db.insertUser(user)
+    override suspend fun insertUserIntoDb(userDTO: UserDTO){
+        db.insertUser(userDTO)
     }
 
-    override suspend fun getContactListFromDb(): List<User> {
+    override suspend fun getContactListFromDb(): List<UserDTO> {
         return db.getContacts()
     }
 
-    override suspend fun deleteUserFromDb(user: User){
-        db.deleteUser(user)
+    override suspend fun deleteUserFromDb(userDTO: UserDTO){
+        db.deleteUser(userDTO)
     }
 
 

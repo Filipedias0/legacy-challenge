@@ -4,10 +4,8 @@ import androidx.room.Room
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.picpay.desafio.android.data.db.UserDAO
-import com.picpay.desafio.android.data.db.UserDatabase
-import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUser
+import com.picpay.desafio.android.data.entity.UserDTO
+import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUserDTO
 import com.picpay.desafio.android.utils.dataMock.UserMock.mockedUser
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -38,9 +36,9 @@ class UserDAOTest {
 
     @Test
     fun insertContactListIntoDb() = runBlocking{
-        userDAO.insertContactList(listOfMockedUser)
+        userDAO.insertContactList(listOfMockedUserDTO)
 
-        assertThat(userDAO.getContacts()).isEqualTo(listOfMockedUser)
+        assertThat(userDAO.getContacts()).isEqualTo(listOfMockedUserDTO)
     }
 
     @Test
@@ -56,7 +54,7 @@ class UserDAOTest {
 
         userDAO.deleteUser(mockedUser)
 
-        assertThat(userDAO.getContacts()).isEqualTo(listOf<User>())
+        assertThat(userDAO.getContacts()).isEqualTo(listOf<UserDTO>())
     }
 
 

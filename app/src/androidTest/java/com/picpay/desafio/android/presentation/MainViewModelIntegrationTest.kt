@@ -11,11 +11,15 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.picpay.desafio.android.data.remote.UserService
 import com.picpay.desafio.android.data.db.UserDAO
 import com.picpay.desafio.android.data.db.UserDatabase
+import com.picpay.desafio.android.data.entity.UserDTO
 import com.picpay.desafio.android.data.repository.UserRepositoryImpl
 import com.picpay.desafio.android.domain.interactors.GetUsers
+import com.picpay.desafio.android.domain.model.UserModel
 import com.picpay.desafio.android.presentation.viewModels.MainViewModel
-import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUser
+import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUserDTO
+import com.picpay.desafio.android.utils.dataMock.UserMock.listOfMockedUserModel
 import kotlinx.coroutines.runBlocking
+import okhttp3.internal.wait
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -35,7 +39,7 @@ class MainViewModelIntegrationTest {
         userDatabase = Room.inMemoryDatabaseBuilder(
             InstrumentationRegistry.getInstrumentation().context,
             UserDatabase::class.java
-        ).allowMainThreadQueries().build()
+        ).build()
 
         userDao = userDatabase.getUserDao()
 
@@ -52,38 +56,35 @@ class MainViewModelIntegrationTest {
     }
 
     @Test
+    fun getUsersSuccess(): Unit = runBlocking {
+        whenever(api.getUsers()).thenReturn(listOfMockedUserModel)
+
+        viewModel.getUserList()
+        viewModel.userListStateFlow.test {
+            val emission = awaitItem()
+            assertThat(emission).isEqualTo(listOfMockedUserModel)
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
     fun getUsersSaveItemsIntoDbOnSuccess(): Unit = runBlocking {
-        whenever(api.getUsers()).thenReturn(listOfMockedUser)
+        whenever(api.getUsers()).thenReturn(listOfMockedUserModel)
 
         viewModel.getUserList()
         assertThat(userDao.getContacts()).isNotEmpty()
     }
 
     @Test
-    fun repositoryCallsApi() = runBlocking {
-        whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        val userList = repository.getUsersFromRemote().getOrNull()
-        assertThat(userList).isEqualTo(listOfMockedUser)
-
-    }
-
-    @Test
-    fun getUserInsertReponseDataIntoDb() = runBlocking {
-        whenever(api.getUsers()).thenReturn(listOfMockedUser)
-        viewModel.getUserList()
-        val userIsInserted = userDao.getContacts()
-        assertThat(userIsInserted).isEqualTo(listOfMockedUser)
-    }
-
-    @Test
     fun getUserFromDbWhenResourceIsNotSuccess() = runBlocking {
-        userDao.insertContactList(listOfMockedUser)
+        userDao.insertContactList(listOfMockedUserDTO)
 
         whenever(repository.getUsersFromRemote()).thenReturn(Result.failure(Throwable("")))
         viewModel.getUserList()
+
         viewModel.userListStateFlow.test {
             val emission = awaitItem()
-            assertThat(emission).isEqualTo(listOfMockedUser)
+            assertThat(emission).isEqualTo(listOfMockedUserModel)
             cancelAndConsumeRemainingEvents()
         }
     }

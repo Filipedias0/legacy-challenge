@@ -1,7 +1,8 @@
 package com.picpay.desafio.android.data.remote
 
 import com.google.gson.GsonBuilder
-import com.picpay.desafio.android.data.remote.UserMock.listOfMockedUser
+import com.picpay.desafio.android.data.remote.UserMock.listOfMockedUserDTO
+import com.picpay.desafio.android.data.remote.UserMock.listOfMockedUserModel
 import com.picpay.desafio.android.data.remote.UserMock.mockedBody
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
@@ -40,7 +41,7 @@ class UserServiceTest {
             mockWebServer.enqueue(MockResponse().setBody(mockedBody))
             val firstResult = service.getUsers()
 
-            assertEquals(firstResult, listOfMockedUser)
+            assertEquals(firstResult, listOfMockedUserModel)
         }
     }
 }

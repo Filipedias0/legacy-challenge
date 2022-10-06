@@ -1,22 +1,22 @@
 package com.picpay.desafio.android.data.db
 
 import androidx.room.*
-import com.picpay.desafio.android.data.model.User
+import com.picpay.desafio.android.data.entity.UserDTO
 
 @Dao
 interface UserDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUser(user: User)
+    suspend fun insertUser(userDTO: UserDTO)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertContactList(user: List<User>)
+    suspend fun insertContactList(userDTO: List<UserDTO>)
 
     @Query("SELECT * FROM user_table")
-    suspend fun getContacts(): List<User>
+    suspend fun getContacts(): List<UserDTO>
 
     @Delete()
-    suspend fun deleteUser(user: User)
+    suspend fun deleteUser(userDTO: UserDTO)
 
 
 }

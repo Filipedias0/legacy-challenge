@@ -1,12 +1,13 @@
 package com.picpay.desafio.android.domain.repository
 
-import com.picpay.desafio.android.data.model.User
+import com.picpay.desafio.android.data.entity.UserDTO
+import com.picpay.desafio.android.domain.model.UserModel
 
 interface UserRepository {
-    suspend fun getUsersFromRemote(): Result<List<User>>
-    suspend fun insertContactListIntoDb(userList: List<User>)
-    suspend fun insertUserIntoDb(user: User)
-    suspend fun getContactListFromDb(): List<User>
-    suspend fun deleteUserFromDb(user: User)
+    suspend fun getUsersFromRemote(): Result<List<UserModel>>
+    suspend fun insertContactListIntoDb(userDTOList: List<UserDTO>)
+    suspend fun insertUserIntoDb(userDTO: UserDTO)
+    suspend fun getContactListFromDb(): List<UserDTO>
+    suspend fun deleteUserFromDb(userDTO: UserDTO)
 }
 
